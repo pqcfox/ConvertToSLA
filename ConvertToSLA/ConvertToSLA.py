@@ -22,12 +22,12 @@ class ConvertToSLA(Extension):
                 Logger.log('e', 'GCODE already in SLA format')
 
     def _convert_list(gcode_list):
-        gcode = ''.join(gcode_list)  # newlines already there 
-        for pattern, repl in RULES:
-            try:
-                gcode = re.sub(pattern, repl, gcode)
-            except Exeption as e:
-                Logger.log('e', 'A rule raised the exception {}'.format(str(e)))
-
-        new_gcode_list = [line + '\n' for line in gcode.split('\n')]
-        return gcode_list
+        new_gcode_list = []
+        for gcode in gcode_list:
+            for pattern, repl in RULES:
+                try:
+                    gcode = re.sub(pattern, repl, gcode)
+                except Exeption as e:
+                    Logger.log('e', 'A rule raised the exception {}'.format(str(e)))
+            new_gcode_list.append(gcode)
+        return new_gcode_list
